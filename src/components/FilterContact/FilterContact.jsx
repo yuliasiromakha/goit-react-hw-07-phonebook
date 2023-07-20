@@ -1,12 +1,12 @@
 import { useDispatch } from "react-redux";
-import { setFilter } from "redux/reducer";
+// import { setFilter } from "redux/slice";
 
 const FilterContact = () => {
   const dispatch = useDispatch();
 
   const handleInputChange = (event) => {
     const { value } = event.target;
-    dispatch(setFilter(value.toLowerCase()));
+    // dispatch(setFilter(value.toLowerCase()));
   };
 
   return (

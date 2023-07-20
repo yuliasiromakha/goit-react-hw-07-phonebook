@@ -6,14 +6,14 @@ import PhonebookTitle from "./PhonebookTitle/PhonebookTitle";
 import ContactForm from "./ContactForm/ContactForm";
 import FilterContact from "./FilterContact/FilterContact";
 import ContactList from "./ContactList/ContactList";
-import { setContacts } from "redux/reducer";
+// import { setContacts } from "redux/slice";
 
 const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     const contacts = JSON.parse(localStorage.getItem('contacts')) || [];
-    dispatch(setContacts(contacts));
+    // dispatch(setContacts(contacts));
   }, [dispatch]);
 
   return (
