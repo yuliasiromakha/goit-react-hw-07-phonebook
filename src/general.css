@@ -1,0 +1,15 @@
+.border__style {
+    border: 1px solid black;
+    padding: 15px 30px;
+    width: 350px;
+}
+
+.general__positioning {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 4px;
+    color: #010101;
+}
