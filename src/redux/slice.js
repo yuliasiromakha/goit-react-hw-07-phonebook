@@ -36,6 +36,7 @@ const contactSlice = createSlice({
     addContact: (state, action) => {
       console.log('added contact');
       state.items.push(action.payload);
+      state.initialItems.push(action.payload);
     },
     deleteContact: (state, action) => {
       console.log('deleted contact');
@@ -48,7 +49,6 @@ const contactSlice = createSlice({
       if (action.payload === '') {
         state.items = state.initialItems.slice();
       } else {
-
         state.items = state.initialItems.filter((contact) => {
           const nameMatch = contact.name.toLowerCase().includes(action.payload.toLowerCase());
           const number = contact.number || ""; 
@@ -57,8 +57,7 @@ const contactSlice = createSlice({
           return nameMatch || numberMatch;
         });
       }
-    },
-    
+    },    
   },
   extraReducers: (builder) => {
     builder
