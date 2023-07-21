@@ -39,7 +39,7 @@ const ContactList = () => {
     >
       {contacts.map((contact) => (
         <li key={contact.id} style={{ fontSize: 16 }}>
-          {contact.name}: {contact.phone ?? contact.number}
+          {contact.name}: {contact.phone || contact.number}
           <button type="button" style={{ marginLeft: 20 }} onClick={() => handleDeleteContact(contact.id)}>Delete contact</button>
         </li>
       ))}

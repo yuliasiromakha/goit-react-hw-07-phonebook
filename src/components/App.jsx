@@ -1,5 +1,3 @@
-// import { useEffect } from "react";
-// import { useDispatch } from "react-redux";
 import './general.css'
 
 import PhonebookTitle from "./PhonebookTitle/PhonebookTitle";
@@ -8,12 +6,6 @@ import FilterContact from "./FilterContact/FilterContact";
 import ContactList from "./ContactList/ContactList";
 
 const App = () => {
-  // const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   const contacts = JSON.parse(localStorage.getItem('contacts')) || [];
-  //   // dispatch(setContacts(contacts));
-  // }, [dispatch]);
 
   return (
     <div className="general__positioning">

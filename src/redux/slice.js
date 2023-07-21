@@ -2,12 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const BASE_URL = 'https://64ba39405e0670a501d5d38b.mockapi.io/contacts/contacts-list';
 
-const initialState = {
-  items: [],
-  isLoading: false,
-  error: null,
-  filter: '',
-};
 
 export const fetchContacts = createAsyncThunk('contacts/fetchAll', async () => {
   try {
@@ -27,6 +21,14 @@ export const fetchContacts = createAsyncThunk('contacts/fetchAll', async () => {
   }
 });
 
+const initialState = {
+  items: [],
+  initialItems: [], 
+  isLoading: false,
+  error: null,
+  filter: '',
+};
+
 const contactSlice = createSlice({
   name: 'contacts',
   initialState,
@@ -42,11 +44,21 @@ const contactSlice = createSlice({
     setFilter: (state, action) => {
       console.log('this is setfilter');
       state.filter = action.payload;
+    
+      if (action.payload === '') {
+        state.items = state.initialItems.slice();
+      } else {
 
-      state.items = state.items.filter((contact) =>
-        contact.name.toLowerCase().includes(action.payload.toLowerCase())
-      );
+        state.items = state.initialItems.filter((contact) => {
+          const nameMatch = contact.name.toLowerCase().includes(action.payload.toLowerCase());
+          const number = contact.number || ""; 
+          const numberMatch = number.includes(action.payload.toLowerCase());
+    
+          return nameMatch || numberMatch;
+        });
+      }
     },
+    
   },
   extraReducers: (builder) => {
     builder
@@ -56,6 +68,7 @@ const contactSlice = createSlice({
       .addCase(fetchContacts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.items = action.payload;
+        state.initialItems = action.payload;
       })
       .addCase(fetchContacts.rejected, (state, action) => {
         state.isLoading = false;
@@ -66,4 +79,3 @@ const contactSlice = createSlice({
 
 export const { addContact, setFilter, deleteContact } = contactSlice.actions;
 export default contactSlice.reducer;
-
