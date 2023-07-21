@@ -1,18 +1,20 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { nanoid } from "nanoid";
+import { addContact } from "redux/slice";
+import { nanoid } from "nanoid"; 
 import PhonebookTitle from "../PhonebookTitle/PhonebookTitle";
-import AddContactButton from "components/AddContactButton/AddContactButton";
+import AddContactButton from "../AddContactButton/AddContactButton";
 
 const ContactForm = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector((state) => state.contacts.contacts);
+  const contacts = useSelector((state) => state.contacts.items);
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
 
+  console.log('this is contactForm');
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-
     if (name === "name") {
       setName(value);
     } else if (name === "number") {
@@ -32,12 +34,12 @@ const ContactForm = () => {
     }
 
     const contact = {
-      id: nanoid(),
+      id: nanoid(), 
       name,
       number,
     };
 
-    // dispatch(addContact(contact));
+    dispatch(addContact(contact));
     setName("");
     setNumber("");
   };

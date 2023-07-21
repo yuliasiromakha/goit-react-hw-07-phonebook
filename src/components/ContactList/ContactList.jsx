@@ -3,12 +3,12 @@ import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchContacts } from 'redux/slice';
 
-const STATUS = {
-  IDLE: "idle",
-  PENDING: "pending",
-  RESOLVED: "resolved",
-  REJECTED: "rejected",
-};
+// const STATUS = {
+//   IDLE: "idle",
+//   PENDING: "pending",
+//   RESOLVED: "resolved",
+//   REJECTED: "rejected",
+// };
 
 const ContactList = () => {
   const dispatch = useDispatch();
