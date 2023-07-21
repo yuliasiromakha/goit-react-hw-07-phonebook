@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchContacts } from 'redux/slice';
+import { fetchContacts, deleteContact } from 'redux/slice';
 import PhonebookTitle from '../PhonebookTitle/PhonebookTitle'
 
 const ContactList = () => {
@@ -24,6 +24,10 @@ const ContactList = () => {
     return error;
   }
 
+  const handleDeleteContact = (id) => {
+    dispatch(deleteContact(id));
+  };
+
   return (
     <ul
       style={{
@@ -36,7 +40,7 @@ const ContactList = () => {
       {contacts.map((contact) => (
         <li key={contact.id} style={{ fontSize: 16 }}>
           {contact.name}: {contact.phone ?? contact.number}
-          <button type="button" style={{marginLeft: 20 }}>Delete contact</button>
+          <button type="button" style={{ marginLeft: 20 }} onClick={() => handleDeleteContact(contact.id)}>Delete contact</button>
         </li>
       ))}
     </ul>
