@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 import PhonebookTitle from "../PhonebookTitle/PhonebookTitle";
 import AddContactButton from "components/AddContactButton/AddContactButton";
-// import { addContact } from "redux/slice"; 
 
 const ContactForm = () => {
   const dispatch = useDispatch();

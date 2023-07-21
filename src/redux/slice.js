@@ -1,51 +1,62 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-const initialState = {
-  contacts: {
+const BASE_URL = 'https://64ba39405e0670a501d5d38b.mockapi.io/contacts/contacts-list';
+
+export const fetchContacts = createAsyncThunk('contacts/fetchAll', async () => {
+  try {
+    const response = await fetch(BASE_URL, {
+      method: 'GET',
+      headers: { 'content-type': 'application/json' },
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok.');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('There has been an error:', error);
+    throw error;
+  }
+});
+
+const contactSlice = createSlice({
+  name: 'contacts',
+  initialState: {
     items: [],
     isLoading: false,
     error: null,
   },
-  filter: ''
-}
-
-const contactSlice = createSlice({
-  initialState, 
   reducers: {
-    'fetchContactRequest': (state, action) => {
-      state.status = 'pending'
+    addContact: (state, action) => {
+      console.log('added contact');
+      state.items.push(action.payload);
     },
-    'fetchContactSuccess': (state, action) => {
-      state.status = 'success'
+    deleteContact: (state, action) => {
+      console.log('deleted contact');
+      state.items = state.items.filter((contact) => contact.id !== action.payload);
     },
-    'fetchContactError': (state, action) => {
-      state.status = 'error'
+    setFilter: (state, action) => {
+      console.log('this is setfilter');
+      state.filter = action.payload;
     },
-  }
-})
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchContacts.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchContacts.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.items = action.payload;
+      })
+      .addCase(fetchContacts.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      });
+  },
+});
 
-export default contactSlice;
+export const { addContact, setFilter, deleteContact } = contactSlice.actions;
 
-
-//   reducers: {
-//     addContact: (state, action) => {
-//       console.log('added contact');
-//       state.contacts.push(action.payload);
-//     },
-//     deleteContact: (state, action) => {
-//       console.log('deleted contact');
-//       state.contacts = state.contacts.filter((contact) => contact.id !== action.payload);
-//     },
-//     setFilter: (state, action) => {
-//         console.log('this is setfilter');
-//       state.filter = action.payload;
-//     },
-//     setContacts: (state, action) => {
-//       state.contacts = action.payload;
-//     },
-//   },
-// });
-
-// export const { addContact, setFilter, deleteContact, setContacts } = contactSlice.actions;
-
-// export default contactSlice.reducer;
+export default contactSlice.reducer;

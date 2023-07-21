@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
-// import { deleteContact } from "redux/slice";
-import { getContacts } from "../api/api";
+import { fetchContacts } from 'redux/slice';
 
 const STATUS = {
   IDLE: "idle",
@@ -12,60 +11,47 @@ const STATUS = {
 };
 
 const ContactList = () => {
-  // const contacts = useSelector((state) => state.contacts.contacts);
-  const filter = useSelector((state) => state.contacts.filter);
   const dispatch = useDispatch();
-  const { contacts, status, error } = useSelector((state) => state.contacts);
+  const { items: contacts, isLoading, error } = useSelector((state) => state.contacts);
 
   useEffect(() => {
-    dispatch(getContacts())  
+    dispatch(fetchContacts());
   }, [dispatch]);
 
-  // const fetchContacts = () => {
+  if (isLoading) {
+    return 'Loading..';
+  }
 
-  // }
+  if (error) {
+    return `Error fetching contacts: ${error}`;
+  }
 
-  const handleDeleteContact = (id) => {
-    // dispatch(deleteContact(id));
-  };
+  if (contacts.length === 0) {
+    return 'No contacts found.';
+  }
 
-  const filteredContacts = contacts.filter((contact) =>
-    contact.name.toLowerCase().includes(filter.toLowerCase())
+  return (
+    <ul
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 10,
+        justifyContent: "space-between",
+      }}
+    >
+      {contacts.map((contact) => (
+        <li key={contact.id} style={{ fontSize: 16 }}>
+          {contact.name}: {contact.number}
+          <button
+            style={{ marginLeft: 30 }}
+            // onClick={() => handleDeleteContact(contact.id)}
+          >
+            Delete Contact
+          </button>
+        </li>
+      ))}
+    </ul>
   );
-
-  if (status === STATUS.PENDING) {
-    return 'Loading..'
-  }
-
-  if (status === STATUS.REJECTED) {
-    return {error}
-  }
-
-  if (status === STATUS.RESOLVED) {
-    return (
-      <ul
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 10,
-          justifyContent: "space-between",
-        }}
-      >
-        {filteredContacts.map((contact) => (
-          <li key={contact.id} style={{ fontSize: 16 }}>
-            {contact.name}: {contact.number}
-            <button
-              style={{ marginLeft: 30 }}
-              onClick={() => handleDeleteContact(contact.id)}
-            >
-              Delete Contact
-            </button>
-          </li>
-        ))}
-      </ul>
-    );
-  }
-
 };
 
 ContactList.propTypes = {
