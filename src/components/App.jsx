@@ -19,13 +19,6 @@ const App = () => {
   return (
     <div className="general__positioning">
       <div className="border__style">
-        <PhonebookTitle
-          title="Name"
-          styles={{
-            fontSize: 15,
-            marginBottom: 0,
-          }}
-        />
         <ContactForm />
       </div>
 
