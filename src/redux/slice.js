@@ -37,13 +37,21 @@ const contactSlice = createSlice({
       console.log('added contact');
       state.items.push(action.payload);
       state.initialItems.push(action.payload);
+      console.log('Updated state after adding:', state);
     },
     deleteContact: (state, action) => {
       console.log('deleted contact');
       state.items = state.items.filter((contact) => contact.id !== action.payload);
+      console.log('Updated state after deleting:', state);
     },
+    // deleteContact: (state, action) => {
+    //   console.log('deleted contact');
+    //   state.items = state.items.filter((contact) => contact.id !== action.payload.id);
+    //   state.initialItems = state.initialItems.filter((contact) => contact.id !== action.payload.id);
+    // },
+    
+    
     setFilter: (state, action) => {
-      console.log('this is setfilter');
       state.filter = action.payload;
     
       if (action.payload === '') {
@@ -51,13 +59,15 @@ const contactSlice = createSlice({
       } else {
         state.items = state.initialItems.filter((contact) => {
           const nameMatch = contact.name.toLowerCase().includes(action.payload.toLowerCase());
-          const number = contact.number || ""; 
+          const number = contact.number || "";
           const numberMatch = number.includes(action.payload.toLowerCase());
     
           return nameMatch || numberMatch;
         });
       }
-    },    
+      console.log('Updated state after filtering:', state);
+    },
+       
   },
   extraReducers: (builder) => {
     builder
