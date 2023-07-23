@@ -7,6 +7,7 @@ import contactReducer from "./slice";
 const persistConfig = {
   key: "root",
   storage,
+  blacklist: ["contacts"],
 };
 
 const persistedReducer = persistReducer(persistConfig, contactReducer);

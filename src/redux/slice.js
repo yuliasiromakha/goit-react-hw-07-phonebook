@@ -36,7 +36,7 @@ const contactSlice = createSlice({
     addContact: (state, action) => {
       console.log('added contact');
       state.items.push(action.payload);
-      state.initialItems.push(action.payload);
+      // state.initialItems.push(action.payload);
       console.log('Updated state after adding:', state);
     },
     deleteContact: (state, action) => {
@@ -77,7 +77,7 @@ const contactSlice = createSlice({
       .addCase(fetchContacts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.items = action.payload;
-        state.initialItems = action.payload;
+        // state.initialItems = action.payload;
       })
       .addCase(fetchContacts.rejected, (state, action) => {
         state.isLoading = false;
