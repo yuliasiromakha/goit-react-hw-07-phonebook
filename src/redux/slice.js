@@ -21,6 +21,49 @@ export const fetchContacts = createAsyncThunk('contacts/fetchAll', async () => {
   }
 });
 
+export const addContact = createAsyncThunk(
+  'contacts/addContact',
+  async (contact, { rejectWithValue }) => {
+    try {
+      const response = await fetch(BASE_URL, {
+        method: 'POST',
+        body: JSON.stringify(contact),
+        headers: { 'content-type': 'application/json' },
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok.');
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('There has been an error:', error);
+      rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteContact = createAsyncThunk(
+  'contacts/deleteContact',
+  async (contactId, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`${BASE_URL}/${contactId}`, {
+        method: 'DELETE',
+        headers: { 'content-type': 'application/json' },
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok.');
+      }
+
+      return contactId;
+    } catch (error) {
+      console.error('There has been an error:', error);
+      rejectWithValue(error.message);
+    }
+  }
+);
+
 const initialState = {
   items: [],
   initialItems: [], 
@@ -32,43 +75,6 @@ const initialState = {
 const contactSlice = createSlice({
   name: 'contacts',
   initialState,
-  reducers: {
-    addContact: (state, action) => {
-      console.log('added contact');
-      state.items.push(action.payload);
-      // state.initialItems.push(action.payload);
-      console.log('Updated state after adding:', state);
-    },
-    deleteContact: (state, action) => {
-      console.log('deleted contact');
-      state.items = state.items.filter((contact) => contact.id !== action.payload);
-      console.log('Updated state after deleting:', state);
-    },
-    // deleteContact: (state, action) => {
-    //   console.log('deleted contact');
-    //   state.items = state.items.filter((contact) => contact.id !== action.payload.id);
-    //   state.initialItems = state.initialItems.filter((contact) => contact.id !== action.payload.id);
-    // },
-    
-    
-    setFilter: (state, action) => {
-      state.filter = action.payload;
-    
-      if (action.payload === '') {
-        state.items = state.initialItems.slice();
-      } else {
-        state.items = state.initialItems.filter((contact) => {
-          const nameMatch = contact.name.toLowerCase().includes(action.payload.toLowerCase());
-          const number = contact.number || "";
-          const numberMatch = number.includes(action.payload.toLowerCase());
-    
-          return nameMatch || numberMatch;
-        });
-      }
-      console.log('Updated state after filtering:', state);
-    },
-       
-  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchContacts.pending, (state) => {
@@ -77,14 +83,38 @@ const contactSlice = createSlice({
       .addCase(fetchContacts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.items = action.payload;
-        // state.initialItems = action.payload;
       })
       .addCase(fetchContacts.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
+      })
+      .addCase(addContact.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addContact.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.items = [...state.items, action.payload];
+      })
+      .addCase(addContact.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(deleteContact.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteContact.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.items = state.items.filter((contact) => contact.id !== action.payload);
+      })
+      .addCase(deleteContact.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(setFilter, (state, action) => {
+        state.filter = action.payload.toLowerCase();
       });
   },
 });
 
-export const { addContact, setFilter, deleteContact } = contactSlice.actions;
+export const {  setFilter } = contactSlice.actions;
 export default contactSlice.reducer;
