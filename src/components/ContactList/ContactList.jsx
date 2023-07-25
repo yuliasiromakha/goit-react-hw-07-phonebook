@@ -2,11 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteContactAsync } from 'redux/contactSlice';
-import PhonebookTitle from '../PhonebookTitle/PhonebookTitle'
+// import PhonebookTitle from '../PhonebookTitle/PhonebookTitle'
 
 const ContactList = () => {
   const dispatch = useDispatch();
-  const { items: contacts, isLoading, error } = useSelector((state) => state.contacts);
+  const { items: contacts, error } = useSelector((state) => state.contacts);
   const filter = useSelector((state) => state.filter.filter); 
 
   const filteredContacts = contacts.filter((contact) =>
@@ -17,17 +17,17 @@ const ContactList = () => {
     dispatch(deleteContactAsync(id));
   };
 
-  if (isLoading) {
-    return (
-      <PhonebookTitle
-        title="Loading..."
-        styles={{
-          fontSize: 15,
-          marginBottom: 0,
-        }}
-      />
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <PhonebookTitle
+  //       title="Loading..."
+  //       styles={{
+  //         fontSize: 15,
+  //         marginBottom: 0,
+  //       }}
+  //     />
+  //   );
+  // }
 
   if (error) {
     return error;
@@ -44,7 +44,7 @@ const ContactList = () => {
     >
       {filteredContacts.map((contact) => (
         <li key={contact.id} style={{ fontSize: 16 }}>
-          {contact.name}: {contact.phone || contact.number}
+          {contact.name}: {contact.number || contact.phone}
           <button
             type="button"
             style={{ marginLeft: 20 }}

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { nanoid } from "nanoid";
 import PhonebookTitle from '../PhonebookTitle';
 import { addContactAsync } from 'redux/contactSlice';
 
@@ -23,7 +22,6 @@ const ContactForm = () => {
     event.preventDefault();
 
     const contact = {
-      id: nanoid(),
       name,
       number,
     };

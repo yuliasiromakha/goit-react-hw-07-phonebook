@@ -110,9 +110,6 @@ const contactSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message;
       })
-      // .addCase(setFilter, (state, action) => {
-      //   state.filter = action.payload.toLowerCase();
-      // });
   },
 });
 
