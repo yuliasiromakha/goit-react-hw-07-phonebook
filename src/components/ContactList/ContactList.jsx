@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteContactAsync } from 'redux/contactSlice';
-// import PhonebookTitle from '../PhonebookTitle/PhonebookTitle'
 
 const ContactList = () => {
   const dispatch = useDispatch();
@@ -16,18 +15,6 @@ const ContactList = () => {
   const handleDeleteContact = (id) => {
     dispatch(deleteContactAsync(id));
   };
-
-  // if (isLoading) {
-  //   return (
-  //     <PhonebookTitle
-  //       title="Loading..."
-  //       styles={{
-  //         fontSize: 15,
-  //         marginBottom: 0,
-  //       }}
-  //     />
-  //   );
-  // }
 
   if (error) {
     return error;

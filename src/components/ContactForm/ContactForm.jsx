@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import PhonebookTitle from '../PhonebookTitle';
 import { addContactAsync } from 'redux/contactSlice';
 
@@ -7,10 +7,10 @@ const ContactForm = () => {
   const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
+  const contacts = useSelector((state) => state.contacts.items);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-
     if (name === "name") {
       setName(value);
     } else if (name === "number") {
@@ -20,6 +20,13 @@ const ContactForm = () => {
 
   const onSubmitForm = (event) => {
     event.preventDefault();
+
+    const contactExists = contacts.some((contact) => contact.name === name);
+
+    if (contactExists) {
+      alert(`Contact with name "${name}" already exists.`);
+      return;
+    }
 
     const contact = {
       name,
@@ -34,7 +41,7 @@ const ContactForm = () => {
   return (
     <div>
       <form onSubmit={onSubmitForm}>
-      <PhonebookTitle
+        <PhonebookTitle
           title="Name"
           styles={{
             fontSize: 15,
@@ -60,7 +67,9 @@ const ContactForm = () => {
           value={number}
           onChange={handleInputChange}
         />
-        <button type="submit" className="add-contact__button">Add Contact</button>
+        <button type="submit" className="add-contact__button">
+          Add Contact
+        </button>
       </form>
     </div>
   );
