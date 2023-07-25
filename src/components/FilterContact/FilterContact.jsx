@@ -1,9 +1,10 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { setFilter } from 'redux/slice';
+import { useDispatch, useSelector } from "react-redux";
+import { setFilter } from 'redux/filterSlice'; 
 
 const FilterContact = () => {
   const dispatch = useDispatch();
+  const filter = useSelector((state) => state.filter.filter);
 
   const handleInputChange = (event) => {
     const { value } = event.target;
@@ -15,6 +16,7 @@ const FilterContact = () => {
       <input
         type="text"
         placeholder="Search contacts"
+        value={filter}
         onChange={handleInputChange}
       />
     </div>

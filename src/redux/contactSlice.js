@@ -21,7 +21,7 @@ export const fetchContacts = createAsyncThunk('contacts/fetchAll', async () => {
   }
 });
 
-export const addContact = createAsyncThunk(
+export const addContactAsync = createAsyncThunk(
   'contacts/addContact',
   async (contact, { rejectWithValue }) => {
     try {
@@ -43,7 +43,7 @@ export const addContact = createAsyncThunk(
   }
 );
 
-export const deleteContact = createAsyncThunk(
+export const deleteContactAsync = createAsyncThunk(
   'contacts/deleteContact',
   async (contactId, { rejectWithValue }) => {
     try {
@@ -88,25 +88,25 @@ const contactSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message;
       })
-      .addCase(addContact.pending, (state) => {
+      .addCase(addContactAsync.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(addContact.fulfilled, (state, action) => {
+      .addCase(addContactAsync.fulfilled, (state, action) => {
         state.isLoading = false;
         state.items = [...state.items, action.payload];
       })
-      .addCase(addContact.rejected, (state, action) => {
+      .addCase(addContactAsync.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       })
-      .addCase(deleteContact.pending, (state) => {
+      .addCase(deleteContactAsync.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(deleteContact.fulfilled, (state, action) => {
+      .addCase(deleteContactAsync.fulfilled, (state, action) => {
         state.isLoading = false;
         state.items = state.items.filter((contact) => contact.id !== action.payload);
       })
-      .addCase(deleteContact.rejected, (state, action) => {
+      .addCase(deleteContactAsync.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       })

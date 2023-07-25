@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { nanoid } from "nanoid";
 import PhonebookTitle from '../PhonebookTitle';
-import { addContact } from 'redux/slice';
+import { addContactAsync } from 'redux/contactSlice';
 
 const ContactForm = () => {
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ const ContactForm = () => {
       number,
     };
 
-    dispatch(addContact(contact));
+    dispatch(addContactAsync(contact));
     setName("");
     setNumber("");
   };

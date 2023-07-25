@@ -1,32 +1,37 @@
-import React, { useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchContacts, deleteContact } from 'redux/slice';
+import { deleteContactAsync } from 'redux/contactSlice';
 import PhonebookTitle from '../PhonebookTitle/PhonebookTitle'
 
 const ContactList = () => {
   const dispatch = useDispatch();
   const { items: contacts, isLoading, error } = useSelector((state) => state.contacts);
+  const filter = useSelector((state) => state.filter.filter); 
 
-  useEffect(() => {
-    dispatch(fetchContacts()); 
-  }, [dispatch]);
+  const filteredContacts = contacts.filter((contact) =>
+    contact.name.toLowerCase().includes(filter)
+  );
+
+  const handleDeleteContact = (id) => {
+    dispatch(deleteContactAsync(id));
+  };
 
   if (isLoading) {
-    return <PhonebookTitle title="Loading..."
-    styles={{
-      fontSize: 15,
-      marginBottom: 0,
-    }}/>;
+    return (
+      <PhonebookTitle
+        title="Loading..."
+        styles={{
+          fontSize: 15,
+          marginBottom: 0,
+        }}
+      />
+    );
   }
 
   if (error) {
     return error;
   }
-
-  const handleDeleteContact = (id) => {
-    dispatch(deleteContact(id));
-  };
 
   return (
     <ul
@@ -37,10 +42,16 @@ const ContactList = () => {
         justifyContent: "space-between",
       }}
     >
-      {contacts.map((contact) => (
+      {filteredContacts.map((contact) => (
         <li key={contact.id} style={{ fontSize: 16 }}>
           {contact.name}: {contact.phone || contact.number}
-          <button type="button" style={{ marginLeft: 20 }} onClick={() => handleDeleteContact(contact.id)}>Delete contact</button>
+          <button
+            type="button"
+            style={{ marginLeft: 20 }}
+            onClick={() => handleDeleteContact(contact.id)}
+          >
+            Delete contact
+          </button>
         </li>
       ))}
     </ul>
